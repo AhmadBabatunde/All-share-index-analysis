@@ -83,42 +83,7 @@ Python 3.8+
 ### GPU Support (Optional)
 The GARCH notebook detects CUDA availability and automatically uses GPU if available. Falls back to CPU otherwise.
 
----
 
-## Notebook Usage
-
-### ASI GARCH (`asi_garch.ipynb`)
-
-```python
-# Initialize the trading system
-system = TimeSeriesTradingSystem(df)
-returns = system.fetch_and_prepare()
-
-# Fit ARIMA-GARCH models
-arima_result, garch_result = system.fit_arima_garch(returns)
-
-# Generate trading signals (last 500 trading days)
-signals = system.generate_signals(returns, max_predictions=500)
-
-# Evaluate performance
-strategy_returns = signals['signal'].shift(1) * returns.loc[signals.index]
-sharpe = strategy_returns.mean() / strategy_returns.std() * np.sqrt(252)
-```
-
-### ASI Markov Chain (`asi_markov_chain.ipynb`)
-
-```python
-# Train 3-state HMM on feature set
-model = hmm.GaussianHMM(n_components=3, covariance_type='full', n_iter=1000, random_state=42)
-model.fit(X_full)
-
-# Predict hidden states
-df['State'] = model.predict(X_full)
-
-# Analyze state statistics
-state_returns = df.groupby('State')['NGX_Return'].mean()
-state_transitions = df.groupby(['State']).size()
-```
 
 ---
 
@@ -200,7 +165,6 @@ Normalized Features → 3-State GaussianHMM → State Assignment →
 ├── README.md                        # This file
 ├── asi_garch.ipynb                 # ARIMA-GARCH trading system
 ├── asi_markov_chain.ipynb          # Hidden Markov Model regime analysis
-└── master_dataset.xlsx              # Input data (not included)
 ```
 
 ---
